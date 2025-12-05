@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas Babi</title>
+    <link rel="stylesheet" href="./style/style.css">
+  </head>
+  <body>
+
+    <div id="loading-screen">
+      <div class="message-box">
+        <h1 class="loading-title">Merry Christmas Babi iu ❄︎</h1>
+        <p class="loading-subtitle">Vậy là năm nay mình đã được cùng nhau đón Giáng Sinh. Đây là món quà mà em muốn dành tặng cho anh, người mà em yêu thương nhất. <br>I love you so much ❤︎</p>
+        <button id="enter-btn" class="loading-btn">Open your gift</button>
+      </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+      <canvas class="webgl"></canvas>
+    </div>
+
+    <script type="x-shader/x-vertex" id="vertexshaderCandle">
+      void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshaderCandle">
+      uniform float time; 
+      uniform float colorSpeed;
+      uniform float delay; 
+      uniform vec3 baseColor;
+      uniform vec3 finalColor;
+      varying vec2 vUv;
+
+      void main() {
+        float animatedTime = time - delay;
+        animatedTime = mod(animatedTime, colorSpeed);
+        float mixFactor = animatedTime / colorSpeed;
+        vec3 finalColor = mix(baseColor, finalColor, mixFactor);
+        gl_FragColor = vec4(finalColor, 1.0);
+      }
+    </script>
+
+    <script type="module" src="./style/module.js"></script>
+
+    <script>
+      const enterBtn = document.getElementById("enter-btn");
+      const loadingScreen = document.getElementById("loading-screen");
+      const mainContent = document.getElementById("main-content");
+
+      enterBtn.addEventListener("click", () => {
+        loadingScreen.classList.add("hidden");
+
+        setTimeout(() => {
+          mainContent.style.display = "block";
+        }, 500);
+      });
+    </script>
+  </body>
+</html>
